@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\Rider\\Games_WebAPI_Belyshev_Semyon\\GamesWebApiBelyshevSemyon.Core\\GamesWebApiBelyshevSemyon.Core\\GamesWebApiBelyshevSemyon.Core.csproj": {}
+    "C:\\Projects\\Rider\\Games_WebAPI_Belyshev_Semyon\\GamesWebApiBelyshevSemyon.Core\\GamesWebApiBelyshevSemyon.Core.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\Rider\\Games_WebAPI_Belyshev_Semyon\\GamesWebApiBelyshevSemyon.Core\\GamesWebApiBelyshevSemyon.Core\\GamesWebApiBelyshevSemyon.Core.csproj": {
+    "C:\\Projects\\Rider\\Games_WebAPI_Belyshev_Semyon\\GamesWebApiBelyshevSemyon.Core\\GamesWebApiBelyshevSemyon.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\Rider\\Games_WebAPI_Belyshev_Semyon\\GamesWebApiBelyshevSemyon.Core\\GamesWebApiBelyshevSemyon.Core\\GamesWebApiBelyshevSemyon.Core.csproj",
+        "projectUniqueName": "C:\\Projects\\Rider\\Games_WebAPI_Belyshev_Semyon\\GamesWebApiBelyshevSemyon.Core\\GamesWebApiBelyshevSemyon.Core.csproj",
         "projectName": "GamesWebApiBelyshevSemyon.Core",
-        "projectPath": "C:\\Projects\\Rider\\Games_WebAPI_Belyshev_Semyon\\GamesWebApiBelyshevSemyon.Core\\GamesWebApiBelyshevSemyon.Core\\GamesWebApiBelyshevSemyon.Core.csproj",
+        "projectPath": "C:\\Projects\\Rider\\Games_WebAPI_Belyshev_Semyon\\GamesWebApiBelyshevSemyon.Core\\GamesWebApiBelyshevSemyon.Core.csproj",
         "packagesPath": "C:\\Users\\Semyon\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\Rider\\Games_WebAPI_Belyshev_Semyon\\GamesWebApiBelyshevSemyon.Core\\GamesWebApiBelyshevSemyon.Core\\obj\\",
+        "outputPath": "C:\\Projects\\Rider\\Games_WebAPI_Belyshev_Semyon\\GamesWebApiBelyshevSemyon.Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Semyon\\AppData\\Roaming\\NuGet\\NuGet.Config"
