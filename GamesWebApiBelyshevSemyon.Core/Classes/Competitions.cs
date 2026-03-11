@@ -46,7 +46,7 @@ namespace WebAPI
         {
             var foundCompetition = _competitions!.FirstOrDefault(existingCompetition => existingCompetition.Id == id);
 
-            if (Utility.IsNull(foundCompetition)) return Microsoft.AspNetCore.Http.Results.NotFound();
+            if (Utility.IsNull(foundCompetition)) return Microsoft.AspNetCore.Http.Results.NotFound("Соревнование не найдено");
 
             _competitions!.RemoveAll(existingCompetition => existingCompetition.Id == id);
 
