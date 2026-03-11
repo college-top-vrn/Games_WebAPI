@@ -15,7 +15,7 @@ public static class StorageManager
             }
 
             var fileText = File.ReadAllText(path);
-            var objects = JsonSerializer.Deserialize<List<T>>(fileText)
+            var objects = JsonSerializer.Deserialize<List<T>>(fileText);
 
             if (objects == null)
             {
