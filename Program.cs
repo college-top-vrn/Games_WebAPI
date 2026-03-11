@@ -1,3 +1,4 @@
+using System.Text.Json;
 using GamesWebAPI;
 
 var competitions = StorageManager.ReadFromFile<Competition>("competitions.json").ToList();
@@ -49,32 +50,24 @@ apiCompetitions.MapGet("/", () =>
 
 apiCompetitions.MapGet("/{id:guid}", (Guid id) =>
     {
-        competitions.FindEntity(id).Finally(foundCompetition => { return Results.Ok(foundCompetition); });
+        return competitions.FindEntity(id).Finally(foundCompetition => { return Results.Ok(foundCompetition); });
     })
     .WithName("Get a single competition by id")
     .Produces(StatusCodes.Status404NotFound)
     .Produces(StatusCodes.Status410Gone)
     .Produces<Competition>();
 
-apiCompetitions.MapGet("/{id:guid}/result", (Guid id) =>
+apiCompetitions.MapGet("/{id:guid}/results", (Guid id) =>
     {
-        Result? result = results.SingleOrDefault(s => s.Id == id);
-        if (result == null) return Results.NotFound("Result not found");
-        if (result.IsDeleted) return Results.Json(new
-        {
-            StatusCode = 410,
-            Message = "Result is deleted"
-        });
+        var resultSearch = results.FindEntity(id);
+        if (resultSearch.Error != null)
+            return resultSearch.Error;
         
-        Competition? competition = competitions.SingleOrDefault(s => s.Id == result.Id);
-        if (competition == null) return Results.NotFound("Competition not found");
-        if (competition.IsDeleted) return Results.Json(new
-        {
-            StatusCode = 410,
-            Message = "Competition is deleted"
-        });
+        var competitionSearch = competitions.FindEntity(resultSearch.Entity!.Id);
+        if (competitionSearch.Error != null)
+            return competitionSearch.Error;
         
-        return Results.Ok(competition);
+        return Results.Ok(competitionSearch.Entity);
     })
     .WithDescription("Get a single competition by result id")
     .Produces(StatusCodes.Status404NotFound)
@@ -115,7 +108,7 @@ apiCompetitions.MapDelete("/{id:guid}", (Guid id) =>
     .Produces(StatusCodes.Status200OK)
     .WithName("Delete a competition");
 
-apiCompetitions.MapPatch("/{id:guid}", (Guid id, Competition competition) =>
+apiCompetitions.MapPut("/{id:guid}", (Guid id, Competition competition) =>
     {
         return competitions.FindEntity(id).Finally(foundCompetition =>
         {
@@ -198,7 +191,7 @@ apiResults.MapDelete("/{id:guid}", (Guid id) =>
     .Produces(StatusCodes.Status200OK)
     .WithName("Delete a result.");
 
-apiResults.MapPatch("/{id:guid}", (Guid id, Result result) =>
+apiResults.MapPut("/{id:guid}", (Guid id, Result result) =>
     {
         return results.FindEntity(id).Finally(foundResult =>
         {
