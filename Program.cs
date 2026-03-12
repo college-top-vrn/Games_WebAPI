@@ -34,16 +34,20 @@ const string urlСompetition = $"/api/competitions";
 var apiCompetition = app.MapGroup(urlСompetition)
     .WithTags("Competitive games");
 
-apiCompetition.MapGet("/", () => 
-        competitions.Where(c => !c.ItDeleted).Any()
-            ? Results.Ok(competitions.Where(c => !c.ItDeleted).ToList())
-            : Results.NoContent())
+apiCompetition.MapGet("/", () =>
+    {
+        var activeCompetitions = competitions.Where(c => !c.IsDeleted).ToList();
+        return activeCompetitions.Count() == 0 
+            ? Results.NotFound() 
+            : Results.Ok(activeCompetitions);
+    })
     .Produces<List<Competition>>(StatusCodes.Status200OK)
     .Produces(StatusCodes.Status204NoContent);
 
 apiCompetition.MapGet("/{id:int}", (int id) =>
     {
-        var comp = competitions.FirstOrDefault(c => c.Id == id && !c.ItDeleted);
+        var activeCompetitions = competitions.Where(c => !c.IsDeleted).ToList();
+        var comp = activeCompetitions.FirstOrDefault(c => c.Id == id);
         return comp is null ? Results.NotFound() : Results.Ok(comp);
     })
     .Produces<Competition>(StatusCodes.Status200OK)
@@ -71,10 +75,7 @@ apiCompetition.MapPut("/{id:int}", (int id, Competition updatedCompetition) =>
         if (index == -1) 
             return Results.NotFound();
 
-        if (string.IsNullOrWhiteSpace(updatedCompetition.Name) ||
-            string.IsNullOrWhiteSpace(updatedCompetition.Location) ||
-            string.IsNullOrWhiteSpace(updatedCompetition.SportType) ||
-            updatedCompetition.Date == DateTime.MinValue)
+        if (Competition.Validation(updatedCompetition))
             return Results.BadRequest("Name, Location, SportType и Date обязательны.");
         
         competitions[index] = new Competition
@@ -98,9 +99,9 @@ apiCompetition.MapDelete("/{id:int}", (int id) =>
     {
         var existingComp = competitions.FirstOrDefault(c => c.Id == id);
         if (existingComp == null) return Results.NotFound();
-        if (existingComp.ItDeleted) return Results.StatusCode(410); 
+        if (existingComp.IsDeleted) return Results.StatusCode(StatusCodes.Status410Gone); 
     
-        existingComp.ItDeleted = true;
+        existingComp.IsDeleted = true;
         Competition.SaveToFile(competitions, "competitions.json");
         return Results.Ok(existingComp);
     })
@@ -115,16 +116,20 @@ const string urlResults = "/api/results";
 var apiResults = app.MapGroup(urlResults)
     .WithTags("Results");
 
-apiResults.MapGet("/", () => 
-        results.Where(r => !r.ItDeleted).Any()
-            ? Results.Ok(results.Where(r => !r.ItDeleted).ToList())
-            : Results.NoContent())
+apiResults.MapGet("/", () =>
+    {
+        var activeResults = results.Where(c => !c.IsDeleted).ToList();
+        return activeResults.Count() == 0 
+            ? Results.NotFound() 
+            : Results.Ok(activeResults);
+    })
     .Produces<List<Result>>(StatusCodes.Status200OK)
     .Produces(StatusCodes.Status204NoContent);
 
 apiResults.MapGet("/{id:int}", (int id) =>
     {
-        var result = results.FirstOrDefault(r => r.Id == id && !r.ItDeleted);
+        var activResults = results.Where(r => !r.IsDeleted).ToList();
+        var result = activResults.FirstOrDefault(r => r.Id == id);
         return result is null ? Results.NotFound() : Results.Ok(result);
     })
     .Produces<Result>(StatusCodes.Status200OK)
@@ -133,8 +138,10 @@ apiResults.MapGet("/{id:int}", (int id) =>
 
 apiResults.MapGet("/{competitionId:int}/results", (int competitionId) =>
     {
-        var competitionResults = results
-            .Where(r => r.CompetitionId == competitionId && !r.ItDeleted)
+
+        var activResults = results.Where(r => !r.IsDeleted).ToList();
+        var competitionResults = activResults
+            .Where(r => r.CompetitionId == competitionId)
             .ToList();
         return competitionResults.Any() ? Results.Ok(competitionResults) : Results.NoContent();
     })
@@ -173,9 +180,7 @@ apiResults.MapPut("/{id:int}", (int id, Result updatedResult) =>
         var index = results.FindIndex(r => r.Id == id);
         if (index == -1) return Results.NotFound();
 
-        if (string.IsNullOrWhiteSpace(updatedResult.ParticipantName) ||
-            updatedResult.Place <= 0 ||
-            !competitions.Any(c => c.Id == updatedResult.CompetitionId))
+        if (Result.Validation(updatedResult, competitions))
             return Results.BadRequest();
         
         results[index] = new Result
@@ -199,9 +204,9 @@ apiResults.MapDelete("/{id:int}", (int id) =>
     {
         var existingResult = results.FirstOrDefault(r => r.Id == id);
         if (existingResult == null) return Results.NotFound();
-        if (existingResult.ItDeleted) return Results.StatusCode(410); 
+        if (existingResult.IsDeleted) return Results.StatusCode(StatusCodes.Status410Gone); 
     
-        existingResult.ItDeleted = true;
+        existingResult.IsDeleted = true;
         Result.SaveToFile(results, "results.json");
         return Results.Ok(existingResult);
     })
