@@ -1,13 +1,13 @@
 @url = http://localhost:5241
 
-// Запросы соревнований start
+// Запросы соревнования start
 
 GET {{url}}/api/competitions/
 Accept: application/json
 
 ###
 
-GET {{url}}/api/competitions/f47ac10b-58cc-4372-a567-0e02b2c3d479
+GET {{url}}/api/competitions/f47ac10b-58cc-4372-a567-0e02b2c3d410
 
 ###
 
@@ -16,44 +16,44 @@ Content-Type: application/json
 
 {
   "Name": "Test2",
-  "Date": "2024-07-01T15:00:00",
+  "Date": "",
   "Location": "Testing2",
   "SportType": "Testing2"
 }
 
 ###
 
-PUT {{url}}//api/competitions/08920a4d-1e1d-4589-938f-1ae0946f9465
+PUT {{url}}//api/competitions/50744159-2653-414d-b961-2e9661ce2120
 Content-Type: application/json
 
 {
-  "Name": "",
+  "Name": "Test4",
   "Date": "2024-07-01T01:00:00",
   "Location": "",
-  "SportType": "Testing changed sport type"
+  "SportType": ""
 }
 
 ###
 
-DELETE {{url}}//api/competitions/08920a4d-1e1d-4589-938f-1ae0946f9465
+DELETE {{url}}//api/competitions/50744159-2653-414d-b961-2e9661ce2120
 
 ###
 
-// Запросы соревнований end
+// Запросы соревнования end
 
-// Запросы результатов start
+// Запросы результата start
 
 GET {{url}}//api/results
 Accept: application/json
 
 ###
 
-GET {{url}}//api/results/67f2dc12-8a44-47f0-89b1-1d57b8b599ab
+GET {{url}}//api/results/763c3b46-7a52-410a-a496-1b519c339cc2
 Accept: application/json
 
 ###
 
-GET {{url}}//api/competitions/f47ac10b-58cc-4372-a567-0e02b2c3d479/results
+GET {{url}}//api/competitions/f47ac10b-58cc-4372-a567-1e12b2c3d470/results
 Accept: application/json
 
 ###
@@ -62,26 +62,28 @@ POST {{url}}//api/results
 Content-Type: application/json
 
 {
-  "CompetitionId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  "ParticipantName": "Мамут Рахал",
-  "Place": 4,
-  "Score": 67
+  "CompetitionId": "",
+  "ParticipantName": "Тест",
+  "Place": 0,
+  "Score": 0
 }
 
 ###
 
-PUT {{url}}//api/results/67f2dc12-8a44-47f0-89b1-1d57b8b599ai
+PUT {{url}}//api/results/763c3b46-7a52-410a-a496-1b609c339cc2
 Content-Type: application/json
 
 {
   "CompetitionId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   "ParticipantName": "",
-  "Place": 1,
-  "Score": 97
+  "Place": 0,
+  "Score": 0
 }
 
 ###
 
-DELETE {{url}}//api/results/67f2dc12-8a44-47f0-89b1-1d57b8b599ai
+DELETE {{url}}//api/results/763c3b46-7a52-410a-a496-1b209c339cc2
 
 ###
+
+// Запросы результата end
