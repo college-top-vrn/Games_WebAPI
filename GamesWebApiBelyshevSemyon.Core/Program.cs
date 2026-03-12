@@ -38,11 +38,13 @@ app.MapDelete("/api/competitions/{id:guid}", Competitions.DeleteById).Produces(S
 
 #region Результаты
 
-app.MapGet("/api/results", WebAPI.Results.GetResults);
+app.MapGet("/api/results", WebAPI.Results.GetResults).Produces(StatusCodes.Status200OK);
 
-app.MapGet("/api/results/{id:guid}", WebAPI.Results.GetById).Produces(StatusCodes.Status404NotFound);
+app.MapGet("/api/results/{id:guid}", WebAPI.Results.GetById).Produces(StatusCodes.Status200OK)
+    .Produces(StatusCodes.Status404NotFound);
 
 app.MapGet("/api/competitions/{competitionId:guid}/results", WebAPI.Results.GetByCompetitionId)
+    .Produces(StatusCodes.Status200OK)
     .Produces(StatusCodes.Status404NotFound);
 
 app.MapPost("/api/results", WebAPI.Results.Add).Produces(StatusCodes.Status400BadRequest)
