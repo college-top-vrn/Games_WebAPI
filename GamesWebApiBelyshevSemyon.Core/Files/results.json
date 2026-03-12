@@ -54,21 +54,5 @@
     "Place": 1,
     "Score": 84,
     "IsDeleted": false
-  },
-  {
-    "Id": "00000000-0000-0000-0000-000000000000",
-    "CompetitionId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    "ParticipantName": "Test",
-    "Place": 4,
-    "Score": 88,
-    "IsDeleted": true
-  },
-  {
-    "Id": "72a1c80a-7503-43e4-8048-5bc3884fffe2",
-    "CompetitionId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-    "ParticipantName": "Velikyi",
-    "Place": 1,
-    "Score": 99,
-    "IsDeleted": false
   }
 ]

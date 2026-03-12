@@ -78,37 +78,5 @@
     "Location": "Zermatt, Switzerland",
     "SportType": "Running",
     "IsDeleted": true
-  },
-  {
-    "Id": "00000000-0000-0000-0000-000000000000",
-    "Name": "Wimbledon Championships",
-    "Date": "2024-07-01T11:00:00",
-    "Location": "London, UK",
-    "SportType": "Basketball",
-    "IsDeleted": true
-  },
-  {
-    "Id": "74ac6a87-49b4-4302-b350-4a5245e8a9e5",
-    "Name": "string",
-    "Date": "2026-03-11T10:28:47.515Z",
-    "Location": "string",
-    "SportType": "string",
-    "IsDeleted": false
-  },
-  {
-    "Id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "Name": "string",
-    "Date": "2026-03-11T16:14:01.036Z",
-    "Location": "Russia, Moscow",
-    "SportType": "string",
-    "IsDeleted": true
-  },
-  {
-    "Id": "da4d51c5-6577-4124-bf65-baa52c9f379f",
-    "Name": "Test1",
-    "Date": "2026-03-11T10:28:47.515Z",
-    "Location": "test1",
-    "SportType": "string",
-    "IsDeleted": true
   }
 ]

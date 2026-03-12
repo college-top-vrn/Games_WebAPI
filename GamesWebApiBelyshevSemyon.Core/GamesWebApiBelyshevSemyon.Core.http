@@ -1,11 +1,13 @@
 @url = http://localhost:5241
 
+// Запросы соревнований start
+
 GET {{url}}/api/competitions/
 Accept: application/json
 
 ###
 
-GET {{url}}/api/competitions/{{id}}
+GET {{url}}/api/competitions/f47ac10b-58cc-4372-a567-0e02b2c3d479
 
 ###
 
@@ -13,20 +15,73 @@ POST {{url}}/api/competitions
 Content-Type: application/json
 
 {
-  "Id": "3fa85f64-5717-4562-b3fc-66afa62c963f",
-  "Name": "Velikie Alkashi",
-  "Date": "2024-07-01T01:00:00",
-  "Location": "Muhosransk, Russia",
-  "SportType": "Viypivka Alkogolya"
+  "Name": "Test2",
+  "Date": "2024-07-01T15:00:00",
+  "Location": "Testing2",
+  "SportType": "Testing2"
 }
 
 ###
 
-PUT {{url}}//api/competitions/{{id}}
+PUT {{url}}//api/competitions/08920a4d-1e1d-4589-938f-1ae0946f9465
 Content-Type: application/json
 
-{ 
-  "Id": ""
+{
+  "Name": "",
+  "Date": "2024-07-01T01:00:00",
+  "Location": "",
+  "SportType": "Testing changed sport type"
 }
+
+###
+
+DELETE {{url}}//api/competitions/08920a4d-1e1d-4589-938f-1ae0946f9465
+
+###
+
+// Запросы соревнований end
+
+// Запросы результатов start
+
+GET {{url}}//api/results
+Accept: application/json
+
+###
+
+GET {{url}}//api/results/67f2dc12-8a44-47f0-89b1-1d57b8b599ab
+Accept: application/json
+
+###
+
+GET {{url}}//api/competitions/f47ac10b-58cc-4372-a567-0e02b2c3d479/results
+Accept: application/json
+
+###
+
+POST {{url}}//api/results
+Content-Type: application/json
+
+{
+  "CompetitionId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "ParticipantName": "Мамут Рахал",
+  "Place": 4,
+  "Score": 67
+}
+
+###
+
+PUT {{url}}//api/results/67f2dc12-8a44-47f0-89b1-1d57b8b599ai
+Content-Type: application/json
+
+{
+  "CompetitionId": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "ParticipantName": "",
+  "Place": 1,
+  "Score": 97
+}
+
+###
+
+DELETE {{url}}//api/results/67f2dc12-8a44-47f0-89b1-1d57b8b599ai
 
 ###

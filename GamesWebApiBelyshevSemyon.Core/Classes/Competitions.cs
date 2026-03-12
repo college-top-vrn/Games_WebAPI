@@ -7,7 +7,7 @@ namespace WebAPI
 {
     public static class Competitions
     {
-        private const string _jsonCompetitionsPath = "Files\\competitions.json";
+        private static string _jsonCompetitionsPath = "Files\\competitions.json";
         private static readonly string _jsonCompetitions = File.ReadAllText(_jsonCompetitionsPath);
         private static List<Competition>? _competitions =
             JsonSerializer.Deserialize<List<Competition>>(_jsonCompetitions);

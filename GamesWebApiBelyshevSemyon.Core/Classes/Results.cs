@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
+
 // ReSharper disable SimplifyLinqExpressionUseAll
+// ReSharper disable ConvertToConstant.Local
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable FieldCanBeMadeReadOnly.Local
@@ -9,7 +11,7 @@ namespace WebAPI
 {
     public static class Results
     {
-        private const string _jsonResultsPath = "Files\\results.json";
+        private static string _jsonResultsPath = "Files\\results.json";
         private static readonly string _jsonResults = File.ReadAllText(_jsonResultsPath);
         private static List<Result>? _results = JsonSerializer.Deserialize<List<Result>>(_jsonResults);
 
@@ -33,7 +35,6 @@ namespace WebAPI
 
             if (foundResults.Count == 0)
                 Microsoft.AspNetCore.Http.Results.NotFound("Не найдены результаты соревнования");
-            //BUG: При поиске результатов по существующему идентификатору соревнований всю равно выдаётся ошибка 404
             return foundResults;
         }
 
@@ -70,8 +71,9 @@ namespace WebAPI
 
             _results!.RemoveAll(existingResult => existingResult.Id == id);
 
-            var newCompetitionId =
-                Utility.IsEmpty(result.CompetitionId.ToString()) ? foundResult!.CompetitionId : result.CompetitionId;
+            var newCompetitionId = Utility.IsEmpty(result.CompetitionId.ToString())
+                ? foundResult!.CompetitionId
+                : result.CompetitionId;
             var newParticipantName = Utility.IsEmpty(result.ParticipantName)
                 ? foundResult!.ParticipantName
                 : result.ParticipantName;
