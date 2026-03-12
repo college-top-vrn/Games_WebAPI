@@ -20,7 +20,7 @@ app.UseHttpsRedirection();
 
 #region Методы соревнований
 
-app.MapGet("/api/competitions", Competitions.GetCompetition);
+app.MapGet("/api/competitions", Competitions.GetCompetition).Produces(StatusCodes.Status200OK);
 
 app.MapGet("/api/competitions/{id:guid}", Competitions.GetById).Produces<Competition>(StatusCodes.Status200OK)
     .Produces(StatusCodes.Status404NotFound);
