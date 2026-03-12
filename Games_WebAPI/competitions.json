@@ -1,2 +1,9 @@
-﻿{
-}
+[
+  {
+    "Id": "6b6a0b9f-0fd6-4833-9e6f-1b1f1b1f1b1f",
+    "Name": "Soccer Tournament 1",
+    "Date": "2026-03-15T18:00:00",
+    "Location": "City Stadium",
+    "SportType": "Football"
+  }
+]

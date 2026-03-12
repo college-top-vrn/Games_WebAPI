@@ -25,7 +25,7 @@ public class JsonCompetitionRepository : ICompetitionRepository
 
     public Competition GetById(Guid id)
     {
-        return _competitions.FirstOrDefault(c => c.Id == id)!;
+        return _competitions.FirstOrDefault(c => c.Id == id);
     }
 
     public void Add(Competition competition)

@@ -1,2 +1,9 @@
-﻿{
-}
+[
+  {
+    "Id": "a1a1a1a1-b2b2-c3c3-d4d4-e5e5e5e5e5e5",
+    "CompetitionId": "6b6a0b9f-0fd6-4833-9e6f-1b1f1b1f1b1f",
+    "ParticipantName": "Player 1",
+    "Place": 1,
+    "Score": 100.5
+  }
+]

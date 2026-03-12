@@ -47,7 +47,7 @@ public class JsonCompetitionResultRepository : ICompetitionResultRepository
 
     public CompetitionResult GetResultById(Guid id)
     {
-        return _results.FirstOrDefault(c => c.Id == id)!;
+        return _results.FirstOrDefault(c => c.Id == id);
     }
 
     public IEnumerable<CompetitionResult> GetAllResultsConcreteCompetition(Guid id)

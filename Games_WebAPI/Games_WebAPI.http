@@ -1,6 +1,128 @@
 @Games_WebAPI_HostAddress = http://localhost:5176
 
-GET {{Games_WebAPI_HostAddress}}/api/competitions
-Accept: application/json
+### 1.1 Создание соревнования
+POST {{Games_WebAPI_HostAddress}}/api/competitions
+Content-Type: application/json
 
-###
+{
+  "id": "6b6a0b9f-0fd6-4833-9e6f-1b1f1b1f1b1f",
+  "name": "Soccer Tournament 1",
+  "date": "2026-03-15T18:00:00",
+  "location": "City Stadium",
+  "sportType": "Football"
+}
+
+### 1.2 Получение всех соревнований
+GET {{Games_WebAPI_HostAddress}}/api/competitions
+Content-Type: application/json
+
+### 1.3 Получение конкретного соревнования
+GET {{Games_WebAPI_HostAddress}}/api/competitions/6b6a0b9f-0fd6-4833-9e6f-1b1f1b1f1b1f
+
+### 1.4 Обновление соревнования (корректно)
+PUT {{Games_WebAPI_HostAddress}}/api/competitions/6b6a0b9f-0fd6-4833-9e6f-1b1f1b1f1b1f
+Content-Type: application/json
+
+{
+  "id": "6b6a0b9f-0fd6-4833-9e6f-1b1f1b1f1b1f",
+  "name": "Updated Soccer Tournament",
+  "date": "2026-03-16T18:00:00",
+  "location": "Main Stadium",
+  "sportType": "Football"
+}
+
+### 1.5 Несовпадающий Id в теле (негативный)
+PUT {{Games_WebAPI_HostAddress}}/api/competitions/6b6a0b9f-0fd6-4833-9e6f-1b1f1b1f1b1f
+Content-Type: application/json
+
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "name": "Some Name",
+  "date": "2026-03-16T18:00:00",
+  "location": "Invalid",
+  "sportType": "Sport"
+}
+
+### 1.6 Обновление несуществующего соревнования (ломающий)
+PUT {{Games_WebAPI_HostAddress}}/api/competitions/99999999-9999-9999-9999-999999999999
+Content-Type: application/json
+
+{
+  "id": "99999999-9999-9999-9999-999999999999",
+  "name": "Non Existing",
+  "date": "2026-03-16T18:00:00",
+  "location": "Nowhere",
+  "sportType": "Sport"
+}
+
+### 1.7 Удаление соревнования
+DELETE {{Games_WebAPI_HostAddress}}/api/competitions/6b6a0b9f-0fd6-4833-9e6f-1b1f1b1f1b1f
+
+### 1.8 Удаление несуществующего соревнования
+DELETE {{Games_WebAPI_HostAddress}}/api/competitions/99999999-9999-9999-9999-999999999999
+
+### 2.1 Создание результата
+POST {{Games_WebAPI_HostAddress}}/api/results
+Content-Type: application/json
+
+{
+  "id": "a1a1a1a1-b2b2-c3c3-d4d4-e5e5e5e5e5e5",
+  "competitionId": "6b6a0b9f-0fd6-4833-9e6f-1b1f1b1f1b1f",
+  "participantName": "Player 1",
+  "place": 1,
+  "score": 100.5
+}
+
+### 2.2 Получение всех результатов
+GET {{Games_WebAPI_HostAddress}}/api/results
+
+### 2.3 Получение конкретного результата
+GET {{Games_WebAPI_HostAddress}}/api/results/a1a1a1a1-b2b2-c3c3-d4d4-e5e5e5e5e5e5
+
+### 2.4 Получение результатов конкретного соревнования
+GET {{Games_WebAPI_HostAddress}}/api/competitions/6b6a0b9f-0fd6-4833-9e6f-1b1f1b1f1b1f/results
+
+### 2.5 Получение результатов несуществующего соревнования
+GET {{Games_WebAPI_HostAddress}}/api/competitions/99999999-9999-9999-9999-999999999999/results
+
+### 2.6 Обновление результата (корректно)
+PUT {{Games_WebAPI_HostAddress}}/api/result/a1a1a1a1-b2b2-c3c3-d4d4-e5e5e5e5e5e5
+Content-Type: application/json
+
+{
+  "id": "a1a1a1a1-b2b2-c3c3-d4d4-e5e5e5e5e5e5",
+  "competitionId": "6b6a0b9f-0fd6-4833-9e6f-1b1f1b1f1b1f",
+  "participantName": "Player 1 Updated",
+  "place": 2,
+  "score": 95.0
+}
+
+### 2.7 Несовпадающий Id в теле (негатив)
+PUT {{Games_WebAPI_HostAddress}}/api/result/a1a1a1a1-b2b2-c3c3-d4d4-e5e5e5e5e5e5
+Content-Type: application/json
+
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "competitionId": "6b6a0b9f-0fd6-4833-9e6f-1b1f1b1f1b1f",
+  "participantName": "Invalid",
+  "place": 0,
+  "score": 0.0
+}
+
+### 2.8 Обновление несуществующего результата (ломающий)
+PUT {{Games_WebAPI_HostAddress}}/api/result/99999999-9999-9999-9999-999999999999
+Content-Type: application/json
+
+{
+  "id": "99999999-9999-9999-9999-999999999999",
+  "competitionId": "6b6a0b9f-0fd6-4833-9e6f-1b1f1b1f1b1f",
+  "participantName": "Non Existing Result",
+  "place": 1,
+  "score": 99.9
+}
+
+### 2.9 Удаление результата
+DELETE {{Games_WebAPI_HostAddress}}/api/results/a1a1a1a1-b2b2-c3c3-d4d4-e5e5e5e5e5e5
+
+### 2.10 Удаление несуществующего результата
+DELETE {{Games_WebAPI_HostAddress}}/api/results/99999999-9999-9999-9999-999999999999
