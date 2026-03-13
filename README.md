@@ -1,77 +1,28 @@
-# Задание: разработка WebAPI для учёта соревнований и их результатов
+# Тест API 
 
-## Цель задания
 
-Разработать RESTful WebAPI на языке C# с использованием ASP.NET Core (MinimalAPI) для учёта информации о спортивных соревнованиях и их результатах. Реализовать базовые операции CRUD, а также написать тесты для проверки корректности работы API. Создать документацию.
-
-## Требования к функционалу
-
-### 1. Модели данных
-
-Реализовать следующие классы (модели):
-
-**Competition** — соревнование:
-* `Id` (int, уникальный идентификатор);
-* `Name` (string, название соревнования);
-* `Date` (DateTime, дата проведения);
-* `Location` (string, место проведения);
-* `SportType` (string, вид спорта).
-
-**Result** — результат участника в соревновании:
-* `Id` (int, уникальный идентификатор);
-* `CompetitionId` (int, ссылка на соревнование);
-* `ParticipantName` (string, имя участника);
-* `Place` (int, занятое место: 1, 2, 3 и т. д.);
-* `Score` (decimal?, оценка или результат в числовом выражении, может быть null).
-
-### 2. API‑эндпоинты
-
-#### Соревнования (`Competitions` controller)
-
-* `GET /api/competitions` — получить список всех соревнований;
-* `GET /api/competitions/{id}` — получить соревнование по ID;
-* `POST /api/competitions` — создать новое соревнование;
-* `PUT /api/competitions/{id}` — обновить соревнование;
-* `DELETE /api/competitions/{id}` — удалить соревнование.
-
-#### Результаты (`Results` controller)
-
-* `GET /api/results` — получить все результаты;
-* `GET /api/results/{id}` — получить результат по ID;
-* `GET /api/competitions/{competitionId}/results` — получить все результаты для конкретного соревнования (по ID соревнования);
-* `POST /api/results` — добавить новый результат;
-* `PUT /api/results/{id}` — обновить результат;
-* `DELETE /api/results/{id}` — удалить результат.
-
-### 3. Хранение данных
-
-Использовать **In‑Memory Storage** (коллекции в памяти) для упрощения реализации. Данные сохраняются между перезапусками приложения.
-
-### 4. Валидация
-
-Реализовать базовую валидацию входящих данных:
-
-* Поля `Name`, `Date`, `Location`, `SportType` для `Competition` не должны быть пустыми.
-* Поля `ParticipantName`, `Place`, `CompetitionId` для `Result` не должны быть пустыми; `Place` должен быть больше 0.
-* При создании `Result` проверять, что `CompetitionId` существует в системе.
-
-### 5. Обработка ошибок
-
-Возвращать соответствующие HTTP‑статусы:
-
-* `200 OK` — успешный запрос (получение данных);
-* `201 Created` — ресурс успешно создан;
-* `400 Bad Request` — неверные входные данные;
-* `404 Not Found` — запрашиваемый ресурс не найден;
-* `500 Internal Server Error` — внутренняя ошибка сервера.
-
-## Критерии оценки
-
-* Корректная реализация всех требуемых эндпоинтов.
-* Соблюдение принципов REST.
-* Наличие и корректность валидации данных.
-* Правильная обработка ошибок и возврат соответствующих HTTP‑статусов.
-* Читаемость и структурированность кода (соблюдение naming conventions, разделение на слои, если применимо).
-* Возможность запустить проект и протестировать API через Swagger UI или Postman.
-* Наличие документации
-  
+| Тип запроса                                                   | Тестируемый модуль         | Цель теста                               | Негативный / позитивный | Ожидаемый результат                                                | Актуальный результат                                               | Результат  |
+| ------------------------------------------------------------- | -------------------------- | ---------------------------------------- | ----------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ---------- |
+| `POST /api/competitions` `{valid Competition}`                | POST competitions          | Создание соревнования                    | Позитивный              | `201 Created` + тело с сохранённым Competition, файл JSON обновлён | `201 Created` + тело с сохранённым Competition, файл JSON обновлён | Пройден    |
+| `GET /api/competitions`                                       | GET competitions           | Получение всех соревнований              | Позитивный              | `200 OK` + список (>= 1 элемента после POST)                       | `200 OK` + список (>= 1 элемента после POST)                       | Пройден    |
+| `GET /api/competitions/{existing-guid}`                       | GET competition by id      | Получение существующего соревнования     | Позитивный              | `200 OK` + правильный объект                                       | `200 OK` + правильный объект                                       | Пройден    |
+| `PUT /api/competitions/{id}` с тем же `Id` в теле             | PUT competitions           | Успешное обновление                      | Позитивный              | `204 NoContent`, повторный `GET` возвращает обновлённые поля       | `204 NoContent`, повторный `GET` возвращает обновлённые поля       | Пройден    |
+| `PUT /api/competitions/{id}` с другим `Id` в теле             | PUT competitions           | Несовпадающий Id                         | Негативный              | `400 BadRequest`                                                   | `400 BadRequest`                                                   | Пройден    |
+| `PUT /api/competitions/{id}` для несуществующего соревнования | PUT competitions           | Обновление несуществующего               | Негативный (ломающий)   | `ArgumentException` в репозитории, тест ожидает падение или `500`  | `ArgumentException` в репозитории, тест ожидает падение или `500`  | Пройден    |
+| `DELETE /api/competitions/{existing-guid}`                    | DELETE competitions        | Удаление существующего                   | Позитивный              | `204 NoContent`, последующий `GET /api/competitions/{id}` → `404`  | `204 NoContent`, последующий `GET /api/competitions/{id}` → `40    | Пройден    |
+| `DELETE /api/competitions/{non-existing-guid}`                | DELETE competitions        | Удаление несуществующего                 | Негативный              | `204 NoContent`, список не меняется                                | `204 NoContent`, список не поменялся                               | Пройден    |
+| `POST /api/results` `{valid CompetitionResult}`               | POST results               | Создание результата                      | Позитивный              | `201 Created` + тело с Result                                      | `201 Created` + тело с Result                                      | Пройден    |
+| `GET /api/results`                                            | GET results                | Получение всех результатов               | Позитивный              | `200 OK` + список (>= 1 после POST)                                | `200 OK` + список (>= 1 после POST)                                | Пройден    |
+| `GET /api/results/{existing-guid}`                            | GET result by id           | Получение существующего результата       | Позитивный              | `200 OK` + корректный Result                                       | `200 OK` + корректный Result                                       | Пройден    |
+| `GET /api/competitions/{existing-competitionId}/results`      | GET results by competition | Результаты по конкретному соревнованию   | Позитивный              | `200 OK` + список только с этим `CompetitionId`                    | `200 OK` + список только с этим `CompetitionId`                    | Пройден    |
+| `GET /api/competitions/{non-existing-competitionId}/results`  | GET results by competition | Пустой результат                         | Позитивный              | `200 OK` + пустой массив                                           | `200 OK` + пустой массив                                           | Пройден    |
+| `PUT /api/result/{id}` с тем же `Id`                          | PUT results                | Успешное обновление результата           | Позитивный              | `204 NoContent`, `GET` возвращает обновлённый Result               | `204 NoContent`, `GET` возвращает обновлённый Result               | Пройден    |
+| `PUT /api/result/{id}` с другим `Id`                          | PUT results                | Несовпадающий Id                         | Негативный              | `400 BadRequest`                                                   | `400 BadRequest`                                                   | Пройден    |
+| `PUT /api/result/{id}` по несуществующему Result              | PUT results                | Обновление несуществующего               | Негативный (ломающий)   | `ArgumentException` в репозитории, тест ожидает падение или `500`  | `ArgumentException` в репозитории, тест ожидает падение или `500`  | Пройден    |
+| `DELETE /api/results/{existing-guid}`                         | DELETE results             | Удаление результата                      | Позитивный              | `204 NoContent`, повторный `GET /api/results/{id}` → `404`         | `204 NoContent`, повторный `GET /api/results/{id}` → `404`         | Пройден    |
+| `DELETE /api/results/{non-existing-guid}`                     | DELETE results             | Удаление несуществующего                 | Негативный              | `204 NoContent`, список не меняется                                | `204 NoContent`, список не меняется                                | Пройден    |
+| `POST /api/competitions` `{duplicate Id}`                     | POST competitions          | Дубликат соревнования ломает репозиторий | Негативный (ломающий)   | `500 Internal` `ArgumentException`                                 | `500 Internal` `ArgumentException`                                 | Пройден    |
+| `POST /api/competitions` `{invalid JSON}`                     | POST competitions          | Некорректный JSON                        | Негативный              | `400 BadRequest`                                                   | `500 Internal Server Error`                                        | Не пройден |
+| `POST /api/results` `{duplicate Id}`                          | POST results               | Дубликат результата ломает репозиторий   | Негативный (ломающий)   | `500 Internal Server Error`, `ArgumentException` из репозитория    | `500 Internal Server Error`, `ArgumentException` из репозитория    | Пройден    |
+| `GET /api/competitions/{non-existing-guid}`                   | GET competition by id      | Не существующее соревнование             | Негативный              | `404 NotFound`                                                     | `404 NotFound`                                                     | Пройден    |
+| `GET /api/results/{non-existing-guid}`                        | GET result by id           | Не существующий результат                | Негативный              | `404 NotFound`                                                     | `200 OK`                                                           | Не пройден |
