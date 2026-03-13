@@ -1,0 +1,34 @@
+﻿[
+  {
+    "Id": 1,
+    "CompetitionId": 1,
+    "ParticipantName": "Иванов Иван",
+    "Place": 1,
+    "Score": 2.5,
+    "ItDeleted": false
+  },
+  {
+    "Id": 2,
+    "CompetitionId": 1,
+    "ParticipantName": "Петров Петр",
+    "Place": 2,
+    "Score": 2.3,
+    "ItDeleted": false
+  },
+  {
+    "Id": 3,
+    "CompetitionId": 1,
+    "ParticipantName": "Сидоров Сергей",
+    "Place": 3,
+    "Score": null,
+    "ItDeleted": false
+  },
+  {
+    "Id": 4,
+    "CompetitionId": 2,
+    "ParticipantName": "Козлов Дмитрий",
+    "Place": 1,
+    "Score": 8.7,
+    "ItDeleted": false
+  }
+]

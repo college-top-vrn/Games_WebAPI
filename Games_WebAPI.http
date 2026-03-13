@@ -1,0 +1,286 @@
+@version = v1
+@urlCompetitions = http://localhost:5188/api/competitions
+@urlResults = http://localhost:5188/api/results
+
+###0. Получить все соревнования (200 OK)
+GET {{urlCompetitions}}/
+
+###1. Получить соревнование ID=1 (404 NotFound - не существует)
+GET {{urlCompetitions}}/1
+
+###2. Получить несуществующее соревнование (404 NotFound)
+GET {{urlCompetitions}}/999
+
+###3. Создать соревнование "Московский марафон" (201 Created)
+POST {{urlCompetitions}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Московский марафон",
+  "date": "2026-05-01T09:00:00",
+  "location": "Красная площадь",
+  "sportType": "Бег"
+}
+
+###4. Проверить создание - получить ID=1 (200 OK)
+GET {{urlCompetitions}}/1
+
+###5. Soft-delete соревнование ID=1 (200 OK)
+DELETE {{urlCompetitions}}/1
+
+###6. Получить soft-удаленное соревнование (404 NotFound)
+GET {{urlCompetitions}}/1
+
+###7. DELETE несуществующего соревнования (404 NotFound)
+DELETE {{urlCompetitions}}/999
+
+###8. DELETE уже удаленного соревнования (410 Gone)
+DELETE {{urlCompetitions}}/1
+
+###9. После DELETE - пустой список (204 NoContent)
+GET {{urlCompetitions}}/
+
+###10. Создать второе соревнование (201 Created)
+POST {{urlCompetitions}}
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "СПБ полумарафон",
+  "date": "2026-06-01T08:00:00",
+  "location": "Невский проспект",
+  "sportType": "Бег"
+}
+
+###11. Обновить соревнование ID=2 (200 OK)
+PUT {{urlCompetitions}}/2
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "Обновленный СПБ марафон",
+  "date": "2026-06-02T09:00:00",
+  "location": "Дворцовая площадь",
+  "sportType": "Бег"
+}
+
+###12. Проверить обновление (200 OK)
+GET {{urlCompetitions}}/2
+
+###13. POST Competition без Name (400 BadRequest)
+POST {{urlCompetitions}}
+Content-Type: application/json
+
+{
+  "id": 3,
+  "date": "2026-07-01T10:00:00",
+  "location": "Арена",
+  "sportType": "Футбол"
+}
+
+###14. POST с пустой датой (400 BadRequest)
+POST {{urlCompetitions}}
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "Тест",
+  "date": "0001-01-01T00:00:00",
+  "location": "Тест",
+  "sportType": "Тест"
+}
+
+###15. POST дублирующийся ID (400 BadRequest)
+POST {{urlCompetitions}}
+Content-Type: application/json
+
+{
+  "id": 2,
+  "name": "Дубликат",
+  "date": "2026-08-01T11:00:00",
+  "location": "Тест",
+  "sportType": "Тест"
+}
+
+###16. GET с неверным ID (400 BadRequest)
+GET {{urlCompetitions}}/abc
+
+###17. Получить все результаты (204 NoContent)
+GET {{urlResults}}/
+
+###18. Создать результат для соревнования 2 (201 Created)
+POST {{urlResults}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "competitionId": 2,
+  "participantName": "Иван Иванов",
+  "place": 1,
+  "score": 42.5
+}
+
+###19. Получить результат ID=1 (200 OK)
+GET {{urlResults}}/1
+
+###20. Получить результаты соревнования ID=2 (200 OK)
+GET {{urlResults}}/competitions/2/results
+
+###21. Soft-delete результат ID=1 (200 OK)
+DELETE {{urlResults}}/1
+
+###22. Получить удаленный результат (404 NotFound)
+GET {{urlResults}}/1
+
+###23. Результаты соревнования после DELETE (204 NoContent)
+GET {{urlResults}}/competitions/2/results
+
+###24. POST Result Place=0 (400 BadRequest)
+POST {{urlResults}}
+Content-Type: application/json
+
+{
+  "id": 2,
+  "competitionId": 2,
+  "participantName": "Петр Петров",
+  "place": 0
+}
+
+###25. POST Result несуществующее соревнование (400 BadRequest)
+POST {{urlResults}}
+Content-Type: application/json
+
+{
+  "id": 2,
+  "competitionId": 999,
+  "participantName": "Test",
+  "place": 2
+}
+
+###26. POST Result без ParticipantName (400 BadRequest)
+POST {{urlResults}}
+Content-Type: application/json
+
+{
+  "id": 2,
+  "competitionId": 2,
+  "place": 2
+}
+
+###27. GET с неверным ID результата (400 BadRequest)
+GET {{urlResults}}/abc
+
+###28. DELETE несуществующего результата (404 NotFound)
+DELETE {{urlResults}}/999
+
+###29. DELETE уже удаленного результата (410 Gone)
+DELETE {{urlResults}}/1
+
+###30. PUT несуществующего результата (404 NotFound)
+PUT {{urlResults}}/999
+Content-Type: application/json
+
+{
+  "id": 999,
+  "competitionId": 2,
+  "participantName": "Test",
+  "place": 3
+}
+
+###31. POST с огромным JSON (500 Internal Server Error)
+POST {{urlCompetitions}}
+Content-Type: application/json
+
+
+{
+  "id": 4,
+  "name": "Очень длинное название" + new String('a', 1000000),
+  "date": "2026-09-01T12:00:00",
+  "location": "Тест",
+  "sportType": "Тест"
+}
+
+###32. POST без Content-Type (500 Internal Server Error)
+POST {{urlCompetitions}}
+
+{
+"id": 4,
+"name": "Без Content-Type",
+"date": "2026-09-01T12:00:00",
+"location": "Тест",
+"sportType": "Тест"
+}
+
+###33. POST с неверным Content-Type (500 Internal Server Error)
+POST {{urlCompetitions}}
+Content-Type: text/plain
+
+{
+"id": 4,
+"name": "Неверный Content-Type",
+"date": "2026-09-01T12:00:00",
+"location": "Тест",
+"sportType": "Тест"
+}
+
+###34. POST с пустым Content-Type (500 Internal Server Error)
+POST {{urlCompetitions}}
+Content-Type:
+
+{
+"id": 4,
+"name": "Пустой Content-Type",
+"date": "2026-09-01T12:00:00",
+"location": "Тест",
+"sportType": "Тест"
+} 
+
+###35. POST с неправильным JSON (400)
+POST {{urlCompetitions}}
+Content-Type: application/json
+
+{
+  "id": 4,
+  "name": "Неправильный JSON",
+  "date": "2026-09-01T12:00:00"
+}
+
+###37. GET с поврежденным Accept заголовком (200 OK)
+GET {{urlCompetitions}}/
+Accept: garbage/text
+
+###38. PUT без Content-Type (500 Internal Server Error)
+PUT {{urlCompetitions}}/2
+Content-Type:
+
+{
+"id": 2,
+"name": "Без Content-Type PUT",
+"date": "2026-06-03T10:00:00",
+"location": "Тест",
+"sportType": "Бег"
+}
+
+###39. POST с некорректными символами в JSON (400)
+POST {{urlCompetitions}}
+Content-Type: application/json
+
+{
+  "id": 4,
+  "name": "название\u0000с\u0000nulл\u0000символами",
+  "date": "2026-09-01T12:00:00",
+  "location": "Тест",
+  "sportType": "Тест"
+}
+
+###40. DELETE с Content-Length без тела (500 Internal Server Error)
+DELETE {{urlCompetitions}}/2
+Content-Length: 10
+
+
+###41. POST с двоичными данными вместо JSON (500 Internal Server Error)
+POST {{urlCompetitions}}
+Content-Type: application/json
+
+это_невалидный_JSON_а_просто_текст
