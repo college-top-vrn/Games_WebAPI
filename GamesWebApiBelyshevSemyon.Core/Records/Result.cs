@@ -1,0 +1,14 @@
+﻿// ReSharper disable CheckNamespace
+
+namespace WebAPI
+{
+    public record Result()
+    {
+        public Guid Id { init; get; }
+        public required Guid CompetitionId { init; get; }
+        public required string ParticipantName { init; get; }
+        public required uint Place { init; get; } = 0;
+        public required uint Score { init; get; } = 0;
+        public bool IsDeleted { init; get; } = false;
+    };
+}
